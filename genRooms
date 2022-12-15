@@ -17,16 +17,16 @@ with sqlite3.connect("database.db") as conn:
             f"""INSERT INTO TYPE
         VALUES (?,?,?);""", (type_name, rate_id, capacity)
         )
-
-    # for _, row in ratedata.iterrows():
-    #     rate_id = row["rate_id"]
-    #     low_season = row["low"]
-    #     mid_season = row["mid"]
-    #     high_season = row["high"]
-    #     cursor.execute(
-    #         f"""INSERT INTO RATE
-    #     VALUES (?,?,?,?);""", (rate_id, mid_season, low_season, high_season)
-    #     )
+        
+    for _, row in ratedata.iterrows():
+        rate_id = int(row["rate_id"])
+        low_season = float(row["low"])
+        mid_season = float(row["mid"])
+        high_season = float(row["high"])
+        cursor.execute(
+            f"""INSERT INTO RATE
+        VALUES (?,?,?,?);""", (rate_id, mid_season, low_season, high_season)
+        )
 
     for _, row in roomdata.iterrows():
         room_id = row["room_id"]
