@@ -46,10 +46,6 @@ CREATE TABLE IF NOT EXISTS "Fills" (
 	FOREIGN KEY ("booking_id") REFERENCES "Booking"("booking_id"),
 	FOREIGN KEY ("room_id") REFERENCES "Room"("room_id")
 );
-CREATE TABLE IF NOT EXISTS "Capacity" (
-	"number"	integer NOT NULL,
-	PRIMARY KEY("number")
-);
 CREATE TABLE IF NOT EXISTS "Individual" (
 	"Fname"	string NOT NULL,
 	"Lname"	string NOT NULL,
@@ -86,9 +82,8 @@ CREATE TABLE IF NOT EXISTS "Room" (
 CREATE TABLE IF NOT EXISTS "Type" (
 	"type_name"	string NOT NULL,
 	"rate_id"	integer NOT NULL,
-	"capacity_num"	integer NOT NULL,
+	"capacity"	integer NOT NULL,
 	PRIMARY KEY("rate_id" AUTOINCREMENT),
-	FOREIGN KEY ("rate_id") REFERENCES "Rate"("rate_id"),
-	FOREIGN KEY ("capacity_num") REFERENCES "Capacity"("number")
+	FOREIGN KEY ("rate_id") REFERENCES "Rate"("rate_id")
 );
 COMMIT;
