@@ -1,0 +1,27 @@
+import sqlite3
+import pandas as pd
+
+
+booking_data = pd.read_excel("booking.xlsx")
+
+with sqlite3.connect("database.db") as conn:
+    cursor = conn.cursor()
+
+    for _, row in booking_data.iterrows():
+        booking_id = row["booking_id"]
+        price = float(row["price"])
+        arrival = row["arrival"].date()
+        departure = row["departure"].date()
+        downpayment = float(row["downpayment"])
+        paid_amount = float(row["paid_amount"])
+        dp_due_date = row["dp_due_date"].date()
+        pay_method = row["pay_method"]
+        children = row["children"]
+        adults = row["adults"]
+        ssn = row["ssn"]
+        cursor.execute(
+            f"""INSERT or REPLACE INTO BOOKING
+        VALUES (?,?,?,?,?,?,?,?,?,?,?);""", (booking_id, price, arrival, departure, downpayment, paid_amount, dp_due_date, pay_method, children, adults, ssn)
+        )
+
+    conn.commit()
