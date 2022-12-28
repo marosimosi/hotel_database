@@ -41,10 +41,16 @@ CREATE TABLE IF NOT EXISTS "Fills" (
 	"booking_id"	integer NOT NULL,
 	"room_id"	integer NOT NULL,
 	"check_in"	date NOT NULL,
-	"check_out"	date NOT NULL,
+	"check_out"	date,
 	PRIMARY KEY("booking_id","room_id"),
 	FOREIGN KEY ("booking_id") REFERENCES "Booking"("booking_id"),
 	FOREIGN KEY ("room_id") REFERENCES "Room"("room_id")
+);
+CREATE TABLE IF NOT EXISTS "Not_Available" (
+	"room_id"	integer NOT NULL,
+	"date"	date NOT NULL,
+	PRIMARY KEY("room_id","date"),
+	FOREIGN KEY("room_id") REFERENCES "Room"("room_id")
 );
 CREATE TABLE IF NOT EXISTS "Individual" (
 	"Fname"	string NOT NULL,
