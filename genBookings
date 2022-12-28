@@ -46,12 +46,12 @@ with sqlite3.connect("database.db") as conn:
             VALUES (?,?,?,?); """, (booking_id, room_id, check_in, check_out) 
         )
 
-#    for _, row in not_available_data.iterrows():
-#        room_id = row["room_id"]
-#        date = row["date"].date()
-#        cursor.execute(
-#            f"""INSERT or REPLACE INTO BOOKS
-#            VALUES (?,?); """, (room_id, date)
-#        )
+    for _, row in not_available_data.iterrows():
+        room_id = row["room_id"]
+        date = row["date"].date()
+        cursor.execute(
+            f"""INSERT or REPLACE INTO NOT_AVAILABLE
+            VALUES (?,?); """, (room_id, date)
+        )
 
     conn.commit()
