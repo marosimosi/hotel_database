@@ -40,3 +40,4 @@ with sqlite3.connect("database.db") as conn:
         )
 
     conn.commit()
+ 
