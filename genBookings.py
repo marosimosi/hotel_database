@@ -48,10 +48,11 @@ with sqlite3.connect("database.db") as conn:
 
     for _, row in not_available_data.iterrows():
         room_id = row["room_id"]
-        date = row["date"].date()
+        fromdate = row["from"].date()
+        todate = row["to"].date()
         cursor.execute(
             f"""INSERT or REPLACE INTO NOT_AVAILABLE
-            VALUES (?,?); """, (room_id, date)
+            VALUES (?,?,?); """, (room_id, fromdate, todate)
         )
 
     conn.commit()
