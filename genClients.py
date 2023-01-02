@@ -5,6 +5,7 @@ import pandas as pd
 client_data = pd.read_excel("client.xlsx")
 agency_data = pd.read_excel("agency.xlsx")
 individual_data = pd.read_excel("individual.xlsx")
+reviews_data = pd.read_excel("reviews.xlsx")
 
 with sqlite3.connect("database.db") as conn:
     cursor = conn.cursor()
@@ -37,6 +38,18 @@ with sqlite3.connect("database.db") as conn:
         cursor.execute(
             f"""INSERT or REPLACE INTO INDIVIDUAL
             VALUES (?,?,?,?);""", (Fname, Lname, Bdate, individual_ssn)
+        )
+
+    for _, row in reviews_data.iterrows():
+        review_id = row["review_id"]
+        text = row["text"]
+        date = row["date"].date()
+        score = row["score"]
+        ssn = row["ssn"]
+        type_name = row["type_name"]
+        cursor.execute(
+            f"""INSERT or REPLACE INTO REVIEW
+            VALUES (?,?,?,?,?,?);""", (review_id, text, date, score, ssn, type_name)
         )
 
     conn.commit()
