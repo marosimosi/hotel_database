@@ -5,7 +5,15 @@
 5) 5 nights, 4 adults, 4standard, high season => 120/night = 600
 6) 6 nights, 2 adults, 2 children, 4deluxe, high season => 130/night = 780 (agency: holiday)
 7) 3 nights, 1 adult, 2 children, 3budget, high season => 90/night = 270
+8) 5 nights, 3 adults, 3deluxe, low season => 70/night = 350 (agency: anna_win_tour)
+9) 4 nights, 3 adults, 3deluxe, low season => 70/night = 280
+10) 3 nights, 1 adult, 1budget, mid season => 30/night = 90
+11) 3 nights, 2 adults, 1 child, 3standard, mid season => 80/night = 240 (agency: travel365)
+12) 7 nights, 2 adults, 2standard, mid season => 60/night = 420 (agency: explorer)
+13) 6 nights, 1 adult, 1deluxe, mid season => 60/night = 360
 
-
+***13 ως 16 Feb δεν υπάρχει 3deluxe
 // high season: Ιούνιος, Ιούλιος, Αύγουστος, 24/12 - 8/12
 // mid season: Μάρτιος, Απρίλιος, Μάιος
+
+dp_due_date: 2 εβδομάδες πριν
