@@ -48,8 +48,9 @@ CREATE TABLE IF NOT EXISTS "Fills" (
 );
 CREATE TABLE IF NOT EXISTS "Not_Available" (
 	"room_id"	integer NOT NULL,
-	"date"	date NOT NULL,
-	PRIMARY KEY("room_id","date"),
+	"from"	date NOT NULL,
+	"to"	date NOT NULL,
+	PRIMARY KEY("room_id","from"),
 	FOREIGN KEY("room_id") REFERENCES "Room"("room_id")
 );
 CREATE TABLE IF NOT EXISTS "Individual" (
@@ -59,13 +60,6 @@ CREATE TABLE IF NOT EXISTS "Individual" (
 	"individual_ssn"	integer NOT NULL,
 	PRIMARY KEY("individual_ssn"),
 	FOREIGN KEY ("individual_ssn") REFERENCES "Client"("ssn")
-);
-CREATE TABLE IF NOT EXISTS "Rate" (
-	"rate_id"	integer NOT NULL,
-	"mid_season"	float NOT NULL,
-	"low_season"	float NOT NULL,
-	"high_season"	float NOT NULL,
-	PRIMARY KEY("rate_id")
 );
 CREATE TABLE IF NOT EXISTS "Review" (
 	"review_id"	integer NOT NULL,
@@ -87,9 +81,9 @@ CREATE TABLE IF NOT EXISTS "Room" (
 );
 CREATE TABLE IF NOT EXISTS "Type" (
 	"type_name"	string NOT NULL,
-	"rate_id"	integer NOT NULL,
-	"capacity"	integer NOT NULL,
-	PRIMARY KEY("rate_id" AUTOINCREMENT),
-	FOREIGN KEY ("rate_id") REFERENCES "Rate"("rate_id")
+	"low_season"	float NOT NULL,
+	"mid_season"	float NOT NULL,
+	"high_season"	float NOT NULL,
+	PRIMARY KEY("type_name")
 );
 COMMIT;
