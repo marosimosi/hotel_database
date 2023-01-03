@@ -24,9 +24,9 @@ class DB_connection:
     def get_a_room(self, booking_id):
         booking_id = int(booking_id)
         sql = f""" SELECT room_id
-        FROM (((Booking NATURAL JOIN Books) NATURAL JOIN Type) NATURAL JOIN Room)
+        FROM Books
         WHERE booking_id = {booking_id}"""
-        room_id = self.retrieval_query(sql)
+        room_id = self.retrieval_query(sql)[0][0]
         print(room_id)
         return room_id
 
