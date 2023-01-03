@@ -30,7 +30,7 @@ class Admin:
 
     # Function to check in a client
     def check_in(self):
-        booking_id = input("Enter booking id:")
+        booking_id, _ = Inputs.input_number("Enter booking id:", "Not a number!")
         room_id = int(self.db.get_a_room(booking_id))
         check_in_date = date.today()
         check_out_date = 'NULL'

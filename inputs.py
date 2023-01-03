@@ -28,6 +28,14 @@ class Inputs:
             if Inputs.validate(inp):
                 date = datetime.strptime(inp, '%d-%m-%Y')
                 return date.date()
-            
 
+    def input_number(text, error):
+        while True:
+            inp = input(text)
+            if inp.isdigit():
+                return inp, 1
+            elif inp == "-1":
+                return None, -1
+            print(error)
+            
     
