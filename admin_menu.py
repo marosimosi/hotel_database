@@ -1,5 +1,6 @@
 from admin_sqlite import DB_connection
 from inputs import Inputs
+from datetime import datetime
 from datetime import date
 
 class Admin:
@@ -30,11 +31,19 @@ class Admin:
 
     # Function to check in a client
     def check_in(self):
-        booking_id, _ = Inputs.input_number("Enter booking id:", "Not a number!")
-        room_id = int(self.db.get_a_room(booking_id))
-        check_in_date = date.today()
-        check_out_date = 'NULL'
-        self.db.inster_fills(booking_id, room_id, check_in_date, check_out_date)
+        booking_id, _ = Inputs.input_number("Enter booking id: ", "Not a number!")
+        if len(self.db.retrieval_query(f"SELECT * FROM Booking WHERE booking_id = {int(booking_id)}")) != 0:
+            arrival_date = self.db.retrieval_query(f"SELECT arrival FROM Booking WHERE booking_id = {int(booking_id)}")[0][0]
+            arrival_date = datetime.strptime(arrival_date, '%Y-%m-%d').date()
+            if arrival_date <= date.today():
+                room_id = int(self.db.get_a_room(booking_id))
+                check_in_date = date.today()
+                check_out_date = 'NULL'
+                self.db.inster_fills(booking_id, room_id, check_in_date, check_out_date)
+            else:
+                print("Your booking is for", arrival_date)
+        else:
+            print("There is no such booking!") 
 
 
 if __name__ == "__main__":
