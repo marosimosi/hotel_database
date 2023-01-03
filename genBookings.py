@@ -5,7 +5,6 @@ import pandas as pd
 booking_data = pd.read_excel("booking.xlsx")
 books_data = pd.read_excel("books.xlsx")
 fills_data = pd.read_excel("fills.xlsx")
-not_available_data = pd.read_excel("not_available.xlsx")
 
 with sqlite3.connect("database.db") as conn:
     cursor = conn.cursor()
@@ -29,11 +28,11 @@ with sqlite3.connect("database.db") as conn:
 
     for _, row in books_data.iterrows():
         booking_id = row["booking_id"]
-        type_name = row["type_name"]
+        room_id = row["room_id"]
         booking_date = row["booking_date"].date()
         cursor.execute(
             f"""INSERT or REPLACE INTO BOOKS
-            VALUES (?,?,?); """, (booking_id, type_name, booking_date) 
+            VALUES (?,?,?); """, (booking_id, room_id, booking_date) 
         )
 
     for _, row in fills_data.iterrows():
@@ -44,15 +43,6 @@ with sqlite3.connect("database.db") as conn:
         cursor.execute(
             f"""INSERT or REPLACE INTO FILLS
             VALUES (?,?,?,?); """, (booking_id, room_id, check_in, check_out) 
-        )
-
-    for _, row in not_available_data.iterrows():
-        room_id = row["room_id"]
-        fromdate = row["from"].date()
-        todate = row["to"].date()
-        cursor.execute(
-            f"""INSERT or REPLACE INTO NOT_AVAILABLE
-            VALUES (?,?,?); """, (room_id, fromdate, todate)
         )
 
     conn.commit()
