@@ -31,7 +31,7 @@ class Admin:
     # Function to check in a client
     def check_in(self):
         booking_id = input("Enter booking id:")
-        room_id = input("Enter room id:")
+        room_id = int(self.db.get_a_room(booking_id))
         check_in_date = date.today()
         check_out_date = 'NULL'
         self.db.inster_fills(booking_id, room_id, check_in_date, check_out_date)

@@ -13,3 +13,20 @@ class DB_connection:
         VALUES(?,?,?,?)"""
         cursor.execute(sql, (booking_id, room_id, check_in, check_out))
         self.conn.commit()
+
+    # Gets an sql query and returns the contents
+    def retrieval_query(self, sql: str) -> list:
+        cursor = self.conn.cursor()
+        results = cursor.execute(sql).fetchall()
+        return results
+
+    # Find room_id given the booking_id
+    def get_a_room(self, booking_id):
+        booking_id = int(booking_id)
+        sql = f""" SELECT room_id
+        FROM (((Booking NATURAL JOIN Books) NATURAL JOIN Type) NATURAL JOIN Room)
+        WHERE booking_id = {booking_id}"""
+        room_id = self.retrieval_query(sql)
+        print(room_id)
+        return room_id
+
