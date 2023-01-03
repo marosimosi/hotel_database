@@ -27,6 +27,4 @@ class DB_connection:
         FROM Books
         WHERE booking_id = {booking_id}"""
         room_id = self.retrieval_query(sql)[0][0]
-        print(room_id)
         return room_id
-
