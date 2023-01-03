@@ -15,6 +15,8 @@ class Admin:
                 print("Πάτησες το 2!")
             elif self.option == "3":
                 self.check_in()
+            elif self.option == "4":
+                self.check_out()
             elif self.option == "-1":
                 return
 
@@ -25,13 +27,13 @@ class Admin:
             \n2: Show the 5 reviews with the worst scores and the rooms they concern.\
             \n3: Check in.\
             \n4: Check out.\
-            \n-1: Exit\n", "Not a valid option.",
+            \n-1: Exit\n", "\nNot a valid option.",
             ["1", "2", "3", "4", "-1"])
         return login
 
     # Function to check in a client
     def check_in(self):
-        booking_id, _ = Inputs.input_number("Enter booking id: ", "Not a number!")
+        booking_id, _ = Inputs.input_number("\nEnter booking id: ", "\nNot a number!")
         if len(self.db.retrieval_query(f"SELECT * FROM Booking WHERE booking_id = {int(booking_id)}")) != 0:
             arrival_date = self.db.retrieval_query(f"SELECT arrival FROM Booking WHERE booking_id = {int(booking_id)}")[0][0]
             arrival_date = datetime.strptime(arrival_date, '%Y-%m-%d').date()
@@ -40,10 +42,24 @@ class Admin:
                 check_in_date = date.today()
                 check_out_date = 'NULL'
                 self.db.inster_fills(booking_id, room_id, check_in_date, check_out_date)
+                print("Check in was successful!")
             else:
-                print("Your booking is for", arrival_date)
+                print("You are too early! Your booking is for", arrival_date)
         else:
             print("There is no such booking!") 
+
+    # Function to check out a client (respectfully)
+    def check_out(self):
+        booking_id, _ = Inputs.input_number("\nEnter booking id: ", "\nNot a number!")
+        if len(self.db.retrieval_query(f"SELECT * FROM Fills WHERE booking_id = {int(booking_id)}")) != 0:
+            info = self.db.retrieval_query(f"SELECT * FROM Fills WHERE booking_id = {int(booking_id)}")[0]
+            room_id = info[1]
+            check_in_date = datetime.strptime(info[2], '%Y-%m-%d').date()
+            check_out_date = date.today()
+            self.db.insert_fills(booking_id, room_id, check_in_date, check_out_date)
+            print("Check out was successful!")
+        else:
+            print("There has been no check in for this booking.")
 
 
 if __name__ == "__main__":
