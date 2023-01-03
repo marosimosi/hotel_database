@@ -10,7 +10,7 @@ class Admin:
         while True:
             self.option = self.login()
             if self.option == "1":
-                print("Πάτησες το 1!")
+                self.show_bookings()
             elif self.option == "2":
                 print("Πάτησες το 2!")
             elif self.option == "3":
@@ -60,6 +60,16 @@ class Admin:
             print("Check out was successful!")
         else:
             print("There has been no check in for this booking.")
+
+    # Function to show all the bookings concerning a specific time period
+    def show_bookings(self):
+        start_date = Inputs.input_date("Enter start date (DD-MM-YYYY): ")
+        end_date = Inputs.input_date("Enter end date (DD-MM-YYYY): ")
+        if start_date < end_date:
+            print("booking id\tprice\tarrival\tdeparture\tdownpayment")
+            self.db.return_bookings(start_date, end_date)
+        else:
+            print("Not valid time period.")
 
 
 if __name__ == "__main__":
