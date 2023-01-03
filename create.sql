@@ -31,11 +31,11 @@ CREATE TABLE IF NOT EXISTS "Booking" (
 );
 CREATE TABLE IF NOT EXISTS "Books" (
 	"booking_id"	integer NOT NULL,
-	"type_name"	string NOT NULL,
+	"room_id"	integer NOT NULL,
 	"booking_date"	date NOT NULL,
-	PRIMARY KEY("booking_id","type_name"),
+	PRIMARY KEY("booking_id","room_id"),
 	FOREIGN KEY ("booking_id") REFERENCES "Booking"("booking_id"),
-	FOREIGN KEY ("type_name") REFERENCES "Type"("type_name")
+	FOREIGN KEY ("room_id") REFERENCES "Room"("room_id")
 );
 CREATE TABLE IF NOT EXISTS "Fills" (
 	"booking_id"	integer NOT NULL,
@@ -45,13 +45,6 @@ CREATE TABLE IF NOT EXISTS "Fills" (
 	PRIMARY KEY("booking_id","room_id"),
 	FOREIGN KEY ("booking_id") REFERENCES "Booking"("booking_id"),
 	FOREIGN KEY ("room_id") REFERENCES "Room"("room_id")
-);
-CREATE TABLE IF NOT EXISTS "Not_Available" (
-	"room_id"	integer NOT NULL,
-	"from"	date NOT NULL,
-	"to"	date NOT NULL,
-	PRIMARY KEY("room_id","from"),
-	FOREIGN KEY("room_id") REFERENCES "Room"("room_id")
 );
 CREATE TABLE IF NOT EXISTS "Individual" (
 	"Fname"	string NOT NULL,
