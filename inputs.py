@@ -1,4 +1,5 @@
-    
+from datetime import datetime
+
 class Inputs:
     def __init__(self) -> None:
         pass
@@ -10,5 +11,23 @@ class Inputs:
         while True:
             inp = input(text)
             if inp in options:
-                return options[inp]
+                return inp
             print(error)
+
+    def validate(date_text: str):
+        try:
+            datetime.strptime(date_text, '%d-%m-%Y')
+            return True
+        except ValueError:
+            print("Not a valid date")
+            return False
+
+    def input_date(text: str):
+        while True:
+            inp = input(text)
+            if Inputs.validate(inp):
+                date = datetime.strptime(inp, '%d-%m-%Y')
+                return date.date()
+            
+
+    
