@@ -7,3 +7,6 @@ class DB_Connection:
     
     def check_availability(self, type_name, from_date, to_date):
         return 0
+
+    def read_reviews(self, type_name):
+        return
