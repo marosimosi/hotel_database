@@ -96,10 +96,18 @@ class DB_connection:
                 print(f"{i[0]}\t\t{i[3]}\t{i[5]}\t\t{i[6]}\t\t{i[1]}")
         return reviews
 
-    # Function that returns the clients with late downpayments
+    # Function that returns the late downpayments by individuals
     def late_downpayments_individuals(self):
-        sql = """SELECT booking_id, Fname, Lname, email, telephone, dp_due_date
+        sql = """SELECT booking_id, Fname, Lname, email, telephone, dp_due_date, downpayment - paid_amount
             FROM (Booking NATURAL JOIN Client), Individual
             WHERE dp_due_date < date('now') AND paid_amount < downpayment AND Client.ssn = individual_ssn;"""
         late_dps_individuals = self.retrieval_query(sql)
         return late_dps_individuals
+
+        # Function that returns late downpayments by agencies
+    def late_downpayments_agency(self):
+        sql = """SELECT booking_id, name, email, web_page, dp_due_date, downpayment - paid_amount
+            FROM (Booking NATURAL JOIN Client), Agency
+            WHERE dp_due_date < date('now') AND paid_amount < downpayment AND Client.ssn = agency_ssn;"""
+        late_dps_agency = self.retrieval_query(sql)
+        return late_dps_agency

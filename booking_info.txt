@@ -12,6 +12,7 @@
 12) 7 nights, 2 adults, 2standard, mid season => 60/night = 420 (agency: explorer)
 13) 6 nights, 1 adult, 1deluxe, mid season => 60/night = 360
 14) 2 nights, 4 adults, 2budget, 2budget, high season => 2 * (80/night) = 2 * 160 = 320
+15) 2 nights, 2 adults, 2 children, 2budget, 2budget, high season => 2 * (80/night) = 2 * 160 = 320
 
 ***13 ως 16 Feb δεν υπάρχει 3deluxe
 // high season: Ιούνιος, Ιούλιος, Αύγουστος, 24/12 - 8/1

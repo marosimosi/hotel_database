@@ -90,14 +90,20 @@ class Admin:
     # Function to check for late downpayments
     def late_downpayment(self):
         late_dps_individuals = self.db.late_downpayments_individuals()
-        if len(late_dps_individuals) == 0:
-            print("There are no late downpayments! :)")
-        else:
-            print("Late Downpayments from individuals: ")
-            print("Booking ID\tFirst Name\tLast Name\tEmail\t\tTelephone\tDownpament Due Date")
+        late_dps_agency = self.db.late_downpayments_agency()
+        if len(late_dps_individuals) == 0 and len(late_dps_agency) == 0:
+            print("\nThere are no late downpayments! :)")
+        if len(late_dps_individuals) != 0:
+            print("\nLate Downpayments from individuals: ")
+            print("Booking ID\tFirst Name\tLast Name\tEmail\t\tTelephone\tDownpament Due Date\tOwed Amount")
             for i in range(len(late_dps_individuals)):
-                print(f"{late_dps_individuals[i][0]}\t\t{late_dps_individuals[i][1]}\t\t{late_dps_individuals[i][2]}\t{late_dps_individuals[i][3]}\t{late_dps_individuals[i][4]}\t{late_dps_individuals[i][5]}\t\t")
-    
+                print(f"{late_dps_individuals[i][0]}\t\t{late_dps_individuals[i][1]}\t\t{late_dps_individuals[i][2]}\t{late_dps_individuals[i][3]}\t{late_dps_individuals[i][4]}\t\t{late_dps_individuals[i][5]}\t{late_dps_individuals[i][6]}")
+        if len(late_dps_agency) != 0:
+            print("\nLate Downpayments from bookings by agencies: ")
+            print("Booking ID\tName\t\tEmail\t\t\tWeb Page\t\tDownpament Due Date\tOwed Amount")
+            for i in range(len(late_dps_agency)):
+                print(f"{late_dps_agency[i][0]}\t\t{late_dps_agency[i][1]}\t{late_dps_agency[i][2]}\t{late_dps_agency[i][3]}\t\t{late_dps_agency[i][4]}\t\t{late_dps_agency[i][5]}")
+
 
 if __name__ == "__main__":
     menu = Admin("database.db")
