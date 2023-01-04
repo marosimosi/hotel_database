@@ -55,3 +55,23 @@ class DB_connection:
         for i in arrivals:
             print(f"{i[0]}\t\t")
         return arrivals
+
+    # Function that returns the worst 3 reviews and the rooms they concern
+    def return_reviews(self):
+        sql = """SELECT Review.*, R.room_id
+            FROM Review, Type, Room as R
+            WHERE Review.type_name = Type.type_name AND R.type_name = Type.type_name
+            AND R.room_id in (
+	            SELECT Room.room_id
+	            FROM ((Review NATURAL JOIN Client NATURAL JOIN Booking) NATURAL JOIN Books) NATURAL JOIN Room
+            )
+            Order by score
+            LIMIT 3;"""
+        reviews = self.retrieval_query(sql)
+        print("\nreview_id\tscore\troom_type\troom_id\t\tcomments")
+        for i in reviews:
+            if len(i[5]) > 7:
+                print(f"{i[0]}\t\t{i[3]}\t{i[5]}\t{i[6]}\t\t{i[1]}")
+            else:
+                print(f"{i[0]}\t\t{i[3]}\t{i[5]}\t\t{i[6]}\t\t{i[1]}")
+        return reviews

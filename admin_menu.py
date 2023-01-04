@@ -16,7 +16,7 @@ class Admin:
             elif self.option == "3":
                 self.show_bookings()
             elif self.option == "4":
-                self.db.arrival()
+                self.show_reviews()
             elif self.option == "-1":
                 return
 
@@ -26,7 +26,7 @@ class Admin:
             "\n1: Check in.\
             \n2: Check out.\
             \n3: Show all the bookings concerning a specific time period.\
-            \n4: Show the 5 reviews with the worst scores and the rooms they concern.\
+            \n4: Show the worst 3 reviews and which rooms they concern.\
             \n-1: Exit\n", "\nNot a valid option.",
             ["1", "2", "3", "4", "-1"])
         return login
@@ -69,6 +69,10 @@ class Admin:
             self.db.return_bookings(start_date, end_date)
         else:
             print("Not valid time period.")
+
+    # Function that shows the worst 3 reviews and which rooms they concern
+    def show_reviews(self):
+        self.db.return_reviews()
 
 
 if __name__ == "__main__":
