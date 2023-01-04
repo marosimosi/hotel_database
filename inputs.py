@@ -33,9 +33,7 @@ class Inputs:
         while True:
             inp = input(text)
             if inp.isdigit():
-                return inp, 1
-            elif inp == "-1":
-                return None, -1
+                return inp
             print(error)
             
     
