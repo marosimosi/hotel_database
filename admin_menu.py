@@ -16,7 +16,7 @@ class Admin:
             elif self.option == "3":
                 self.show_bookings()
             elif self.option == "4":
-                self.show_reviews()
+                self.show_worst_reviews()
             elif self.option == "-1":
                 return
 
@@ -33,7 +33,7 @@ class Admin:
 
     # Function to check in a client
     def check_in(self):
-        booking_id, _ = Inputs.input_number("\nEnter booking id: ", "\nNot a number!")
+        booking_id = Inputs.input_number("\nEnter booking id: ", "\nNot a number!")
         if len(self.db.retrieval_query(f"SELECT * FROM Booking WHERE booking_id = {int(booking_id)}")) != 0:
             arrival_date = self.db.retrieval_query(f"SELECT arrival FROM Booking WHERE booking_id = {int(booking_id)}")[0][0]
             arrival_date = datetime.strptime(arrival_date, '%Y-%m-%d').date()
@@ -41,7 +41,7 @@ class Admin:
                 room_id = int(self.db.get_a_room(booking_id))
                 check_in_date = date.today()
                 check_out_date = 'NULL'
-                self.db.inster_fills(booking_id, room_id, check_in_date, check_out_date)
+                self.db.insert_fills(booking_id, room_id, check_in_date, check_out_date)
                 print("Check in was successful!")
             else:
                 print("You are too early! Your booking is for", arrival_date)
@@ -50,7 +50,7 @@ class Admin:
 
     # Function to check out a client (respectfully)
     def check_out(self):
-        booking_id, _ = Inputs.input_number("\nEnter booking id: ", "\nNot a number!")
+        booking_id = Inputs.input_number("\nEnter booking id: ", "\nNot a number!")
         if len(self.db.retrieval_query(f"SELECT * FROM Fills WHERE booking_id = {int(booking_id)}")) != 0:
             info = self.db.retrieval_query(f"SELECT * FROM Fills WHERE booking_id = {int(booking_id)}")[0]
             room_id = info[1]
@@ -71,9 +71,12 @@ class Admin:
             print("Not valid time period.")
 
     # Function that shows the worst 3 reviews and which rooms they concern
-    def show_reviews(self):
+    def show_worst_reviews(self):
         self.db.return_reviews()
 
+    # Function that shows the best 3 reviews and which rooms they concern
+    def show_best_reviews(self):
+        self.db.return_worst_reviews()
 
 if __name__ == "__main__":
     menu = Admin("database.db")
