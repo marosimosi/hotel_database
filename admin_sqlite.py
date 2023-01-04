@@ -6,7 +6,7 @@ class DB_connection:
     def __init__(self, db_path) -> None:
         self.conn = sqlite3.connect(db_path)
 
-    # Inserts new entry in Fills table
+    # Insert new entry in Fills table
     def insert_fills(self, booking_id, room_id, check_in, check_out):
         cursor = self.conn.cursor()
         sql = """INSERT OR REPLACE INTO FILLS(booking_id, room_id, check_in, check_out) 
@@ -14,7 +14,7 @@ class DB_connection:
         cursor.execute(sql, (booking_id, room_id, check_in, check_out))
         self.conn.commit()
 
-    # Gets an sql query and returns the contents
+    # Get an sql query and return the contents
     def retrieval_query(self, sql: str) -> list:
         cursor = self.conn.cursor()
         results = cursor.execute(sql).fetchall()

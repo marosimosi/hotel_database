@@ -39,7 +39,7 @@ class Admin:
             arrival_date = datetime.strptime(arrival_date, '%Y-%m-%d').date()
             if arrival_date <= date.today():
                 rooms = self.db.get_a_room(booking_id)
-                for i in rooms:
+                for i in range(len(rooms)):
                     room_id = rooms[i][0]
                     check_in_date = date.today()
                     check_out_date = 'NULL'
