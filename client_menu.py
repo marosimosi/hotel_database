@@ -89,7 +89,7 @@ class Client:
                 self.db.read_reviews(type_name)
             elif opt == "-1":
                 return
-            
+        
     def new_client(self, ssn):
         fname = input("First name: ")
         lname = input("Last name: ")
@@ -98,10 +98,8 @@ class Client:
         tel = input("Telephone number: ")
         address = input("Address: ")
         self.db.new_client(ssn, email, tel, address, fname, lname, bdate)
-        return
+        return       
         
         
-        
-
 if __name__ == "__main__":
     menu = Client("database.db")
