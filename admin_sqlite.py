@@ -24,10 +24,10 @@ class DB_connection:
     def get_a_room(self, booking_id):
         booking_id = int(booking_id)
         sql = f""" SELECT room_id
-        FROM Books
+        FROM Books NATURAL JOIN Booking
         WHERE booking_id = {booking_id}"""
-        room_id = self.retrieval_query(sql)[0][0]
-        return room_id
+        rooms = self.retrieval_query(sql)
+        return rooms
 
     # Function to return all the bookings concerning a specific time period
     def return_bookings(self, start_date, end_date):
@@ -57,7 +57,7 @@ class DB_connection:
         return arrivals
 
     # Function that returns the worst 3 reviews and the rooms they concern
-    def return_reviews(self):
+    def return_worst_reviews(self):
         sql = """SELECT Review.*, R.room_id
             FROM Review, Type, Room as R
             WHERE Review.type_name = Type.type_name AND R.type_name = Type.type_name

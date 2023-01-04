@@ -38,11 +38,13 @@ class Admin:
             arrival_date = self.db.retrieval_query(f"SELECT arrival FROM Booking WHERE booking_id = {int(booking_id)}")[0][0]
             arrival_date = datetime.strptime(arrival_date, '%Y-%m-%d').date()
             if arrival_date <= date.today():
-                room_id = int(self.db.get_a_room(booking_id))
-                check_in_date = date.today()
-                check_out_date = 'NULL'
-                self.db.insert_fills(booking_id, room_id, check_in_date, check_out_date)
-                print("Check in was successful!")
+                rooms = self.db.get_a_room(booking_id)
+                for i in rooms:
+                    room_id = rooms[i][0]
+                    check_in_date = date.today()
+                    check_out_date = 'NULL'
+                    self.db.insert_fills(booking_id, room_id, check_in_date, check_out_date)
+                    print(f"Check in to room {room_id} was successful!")
             else:
                 print("You are too early! Your booking is for", arrival_date)
         else:
