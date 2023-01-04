@@ -47,10 +47,11 @@ class DB_connection:
                     print(f"{i[0]}\t\t{i[1]}\t{i[2]}\t{i[3]}\t{i[4]}\t\t{i[5]}\t\t{i[6]}\t{i[7]}\t{i[8]}\t\t{i[9]}\t{i[10]}")
         return bookings
 
-    # Function to show all arrival dates
+    # Function to return all arrival dates
     def arrival(self):
         sql = """SELECT arrival
         FROM Booking"""
-        arrivals = self.retrieval_query(sql)[0][0]
+        arrivals = self.retrieval_query(sql)
         for i in arrivals:
             print(f"{i[0]}\t\t")
+        return arrivals

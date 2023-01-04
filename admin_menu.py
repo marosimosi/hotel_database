@@ -10,23 +10,23 @@ class Admin:
         while True:
             self.option = self.login()
             if self.option == "1":
-                self.show_bookings()
-            elif self.option == "2":
-                self.db.arrival()
-            elif self.option == "3":
                 self.check_in()
-            elif self.option == "4":
+            elif self.option == "2":
                 self.check_out()
+            elif self.option == "3":
+                self.show_bookings()
+            elif self.option == "4":
+                self.db.arrival()
             elif self.option == "-1":
                 return
 
     # Menu to get the option from the admin
     def login(self):
         login = Inputs.input_method(
-            "\n1: Show all the bookings concerning a specific time period.\
-            \n2: Show the 5 reviews with the worst scores and the rooms they concern.\
-            \n3: Check in.\
-            \n4: Check out.\
+            "\n1: Check in.\
+            \n2: Check out.\
+            \n3: Show all the bookings concerning a specific time period.\
+            \n4: Show the 5 reviews with the worst scores and the rooms they concern.\
             \n-1: Exit\n", "\nNot a valid option.",
             ["1", "2", "3", "4", "-1"])
         return login
