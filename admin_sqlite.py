@@ -33,8 +33,24 @@ class DB_connection:
     def return_bookings(self, start_date, end_date):
         sql = f""" SELECT *
         FROM Booking
-        WHERE arrival < {end_date} AND departure > {start_date}"""
+        WHERE arrival < date('{end_date}') AND departure > date('{start_date}')
+        ORDER BY arrival;"""
         bookings = self.retrieval_query(sql)
-        for i in bookings:
-            print(f"{i[0]}\t\t{i[1]}\t{i[2]}\t{i[3]}\t{i[4]}")
+        if len(bookings) == 0:
+            print("There are no bookings for this time period.")
+        else:
+            print("\nbooking_id\tprice\tarrival\t\tdeparture\tdownpayment\tpaid_amount\tdp_due_date\tpay_method\tchildren\tadults\tssn")
+            for i in bookings:
+                if len(i[7]) < 5:
+                    print(f"{i[0]}\t\t{i[1]}\t{i[2]}\t{i[3]}\t{i[4]}\t\t{i[5]}\t\t{i[6]}\t{i[7]}\t\t{i[8]}\t\t{i[9]}\t{i[10]}")
+                else:
+                    print(f"{i[0]}\t\t{i[1]}\t{i[2]}\t{i[3]}\t{i[4]}\t\t{i[5]}\t\t{i[6]}\t{i[7]}\t{i[8]}\t\t{i[9]}\t{i[10]}")
         return bookings
+
+    # Function to show all arrival dates
+    def arrival(self):
+        sql = """SELECT arrival
+        FROM Booking"""
+        arrivals = self.retrieval_query(sql)[0][0]
+        for i in arrivals:
+            print(f"{i[0]}\t\t")

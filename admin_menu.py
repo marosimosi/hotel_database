@@ -12,7 +12,7 @@ class Admin:
             if self.option == "1":
                 self.show_bookings()
             elif self.option == "2":
-                print("Πάτησες το 2!")
+                self.db.arrival()
             elif self.option == "3":
                 self.check_in()
             elif self.option == "4":
@@ -66,7 +66,6 @@ class Admin:
         start_date = Inputs.input_date("Enter start date (DD-MM-YYYY): ")
         end_date = Inputs.input_date("Enter end date (DD-MM-YYYY): ")
         if start_date < end_date:
-            print("booking id\tprice\tarrival\tdeparture\tdownpayment")
             self.db.return_bookings(start_date, end_date)
         else:
             print("Not valid time period.")
