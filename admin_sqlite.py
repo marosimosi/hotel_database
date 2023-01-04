@@ -6,7 +6,7 @@ class DB_connection:
     def __init__(self, db_path) -> None:
         self.conn = sqlite3.connect(db_path)
 
-    # Insert new entry in Fills table
+    # Insert or replace Fills entry
     def insert_fills(self, booking_id, room_id, check_in, check_out):
         cursor = self.conn.cursor()
         sql = """INSERT OR REPLACE INTO FILLS(booking_id, room_id, check_in, check_out) 
@@ -104,10 +104,26 @@ class DB_connection:
         late_dps_individuals = self.retrieval_query(sql)
         return late_dps_individuals
 
-        # Function that returns late downpayments by agencies
+    # Function that returns late downpayments by agencies
     def late_downpayments_agency(self):
         sql = """SELECT booking_id, name, email, web_page, dp_due_date, downpayment - paid_amount
             FROM (Booking NATURAL JOIN Client), Agency
             WHERE dp_due_date < date('now') AND paid_amount < downpayment AND Client.ssn = agency_ssn;"""
         late_dps_agency = self.retrieval_query(sql)
         return late_dps_agency
+
+    # Insert or replace Booking entry
+    def insert_booking(self, booking_id, price, arrival, departure, downpayment, paid_amount, dp_due_date, pay_method, children, adults, ssn):
+        cursor = self.conn.cursor()
+        sql = """INSERT OR REPLACE INTO BOOKING(booking_id, price, arrival, departure, downpayment, paid_amount, dp_due_date, pay_method, children, adults, ssn) 
+        VALUES(?,?,?,?,?,?,?,?,?,?,?)"""
+        cursor.execute(sql, (booking_id, price, arrival, departure, downpayment, paid_amount, dp_due_date, pay_method, children, adults, ssn))
+        self.conn.commit()
+
+    # Get Bookings info given the booking_id
+    def get_bookings_info(self, booking_id):
+        sql = f""" SELECT *
+            FROM Booking
+            WHERE booking_id = {booking_id}"""
+        info = self.retrieval_query(sql)[0]
+        return info[0], info[1], info[2], info[3], info[4], info[5], info[6], info[7], info[8], info[9], info[10]
