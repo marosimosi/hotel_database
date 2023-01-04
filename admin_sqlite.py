@@ -120,10 +120,14 @@ class DB_connection:
         cursor.execute(sql, (booking_id, price, arrival, departure, downpayment, paid_amount, dp_due_date, pay_method, children, adults, ssn))
         self.conn.commit()
 
-    # Get Bookings info given the booking_id
+    # Get Booking info given the booking_id
     def get_bookings_info(self, booking_id):
         sql = f""" SELECT *
             FROM Booking
             WHERE booking_id = {booking_id}"""
-        info = self.retrieval_query(sql)[0]
+        info = self.retrieval_query(sql)
+        if len(info) != 0:
+            info = info[0]
+        else:
+            print("There is no such booking!")
         return info

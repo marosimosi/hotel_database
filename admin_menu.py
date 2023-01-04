@@ -111,20 +111,21 @@ class Admin:
     def change_paid_amount(self):
         booking_id = Inputs.input_int("\nEnter booking id: ", "\nNot a number!")
         info = self.db.get_bookings_info(booking_id)
-        price = info[1]
-        arrival = info[2]
-        departure = info[3]
-        downpayment = info[4]
-        paid_amount = info[5]
-        dp_due_date = info[6]
-        pay_method = info[7]
-        children = info[8]
-        adults = info[9]
-        ssn = info[10]
-        payment = Inputs.input_number("\nEnter new payment: ", "\nNot a number!")
-        paid_amount += payment
-        self.db.insert_booking(booking_id, price, arrival, departure, downpayment, paid_amount, dp_due_date, pay_method, children, adults, ssn)
-        print("Payment was successful!")
+        if len(info) != 0:
+            price = info[1]
+            arrival = info[2]
+            departure = info[3]
+            downpayment = info[4]
+            paid_amount = info[5]
+            dp_due_date = info[6]
+            pay_method = info[7]
+            children = info[8]
+            adults = info[9]
+            ssn = info[10]
+            payment = Inputs.input_number("\nEnter new payment: ", "\nNot a number!")
+            paid_amount += payment
+            self.db.insert_booking(booking_id, price, arrival, departure, downpayment, paid_amount, dp_due_date, pay_method, children, adults, ssn)
+            print("Payment was successful!")
 
 
 if __name__ == "__main__":
