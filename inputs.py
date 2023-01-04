@@ -29,11 +29,22 @@ class Inputs:
                 date = datetime.strptime(inp, '%d-%m-%Y')
                 return date.date()
 
-    def input_number(text, error):
+    def input_int(text, error):
         while True:
             inp = input(text)
             if inp.isdigit():
                 return inp
             print(error)
             
+    def input_number(text, error):
+        while True:
+            inp = input(text)
+            try:
+                inp = float(inp)
+                return inp
+            except ValueError:
+                if inp.isdigit():
+                    return int(inp)
+                print(error)
+
     
