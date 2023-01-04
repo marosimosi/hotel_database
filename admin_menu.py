@@ -21,6 +21,8 @@ class Admin:
                 self.show_best_reviews()
             elif self.option == "6":
                 self.late_downpayment()
+            elif self.option == "7":
+                self.change_paid_amount()
             elif self.option == "-1":
                 return
 
@@ -33,13 +35,14 @@ class Admin:
             \n4: Show the worst 3 reviews and which rooms they concern.\
             \n5: Show the best 3 reviews and which rooms they concern. \
             \n6: Check for late downpayments.\
+            \n7: Change the paid amount of a booking.\
             \n-1: Exit\n", "\nNot a valid option.",
-            ["1", "2", "3", "4", "5", "6", "-1"])
+            ["1", "2", "3", "4", "5", "6", "7", "-1"])
         return login
 
     # Function to check in a client
     def check_in(self):
-        booking_id = Inputs.input_number("\nEnter booking id: ", "\nNot a number!")
+        booking_id = Inputs.input_int("\nEnter booking id: ", "\nNot a number!")
         if len(self.db.retrieval_query(f"SELECT * FROM Booking WHERE booking_id = {int(booking_id)}")) != 0:
             arrival_date = self.db.retrieval_query(f"SELECT arrival FROM Booking WHERE booking_id = {int(booking_id)}")[0][0]
             arrival_date = datetime.strptime(arrival_date, '%Y-%m-%d').date()
@@ -58,7 +61,7 @@ class Admin:
 
     # Function to check out a client (respectfully)
     def check_out(self):
-        booking_id = Inputs.input_number("\nEnter booking id: ", "\nNot a number!")
+        booking_id = Inputs.input_int("\nEnter booking id: ", "\nNot a number!")
         if len(self.db.retrieval_query(f"SELECT * FROM Fills WHERE booking_id = {int(booking_id)}")) != 0:
             info = self.db.retrieval_query(f"SELECT * FROM Fills WHERE booking_id = {int(booking_id)}")
             for i in range(len(info)):
@@ -87,7 +90,7 @@ class Admin:
     def show_best_reviews(self):
         self.db.return_best_reviews()
 
-    # Function to check for late downpayments
+    # Function to show late downpayments
     def late_downpayment(self):
         late_dps_individuals = self.db.late_downpayments_individuals()
         late_dps_agency = self.db.late_downpayments_agency()
@@ -103,6 +106,25 @@ class Admin:
             print("Booking ID\tName\t\tEmail\t\t\tWeb Page\t\tDownpament Due Date\tOwed Amount")
             for i in range(len(late_dps_agency)):
                 print(f"{late_dps_agency[i][0]}\t\t{late_dps_agency[i][1]}\t{late_dps_agency[i][2]}\t{late_dps_agency[i][3]}\t\t{late_dps_agency[i][4]}\t\t{late_dps_agency[i][5]}")
+
+    # Function to change the paid amount of a booking
+    def change_paid_amount(self):
+        booking_id = Inputs.input_int("\nEnter booking id: ", "\nNot a number!")
+        info = self.db.get_bookings_info(booking_id)
+        price = info[1]
+        arrival = info[2]
+        departure = info[3]
+        downpayment = info[4]
+        paid_amount = info[5]
+        dp_due_date = info[6]
+        pay_method = info[7]
+        children = info[8]
+        adults = info[9]
+        ssn = info[10]
+        payment = Inputs.input_number("\nEnter new payment: ", "\nNot a number!")
+        paid_amount += payment
+        self.db.insert_booking(booking_id, price, arrival, departure, downpayment, paid_amount, dp_due_date, pay_method, children, adults, ssn)
+        print("Payment was successful!")
 
 
 if __name__ == "__main__":

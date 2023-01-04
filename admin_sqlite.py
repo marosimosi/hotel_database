@@ -126,4 +126,4 @@ class DB_connection:
             FROM Booking
             WHERE booking_id = {booking_id}"""
         info = self.retrieval_query(sql)[0]
-        return info[0], info[1], info[2], info[3], info[4], info[5], info[6], info[7], info[8], info[9], info[10]
+        return info
