@@ -19,6 +19,8 @@ class Admin:
                 self.show_worst_reviews()
             elif self.option == "5":
                 self.show_best_reviews()
+            elif self.option == "6":
+                self.late_downpayment()
             elif self.option == "-1":
                 return
 
@@ -30,8 +32,9 @@ class Admin:
             \n3: Show all the bookings concerning a specific time period.\
             \n4: Show the worst 3 reviews and which rooms they concern.\
             \n5: Show the best 3 reviews and which rooms they concern. \
+            \n6: Check for late downpayments.\
             \n-1: Exit\n", "\nNot a valid option.",
-            ["1", "2", "3", "4", "5", "-1"])
+            ["1", "2", "3", "4", "5", "6", "-1"])
         return login
 
     # Function to check in a client
@@ -83,6 +86,18 @@ class Admin:
     # Function that shows the best 3 reviews and which rooms they concern
     def show_best_reviews(self):
         self.db.return_best_reviews()
+
+    # Function to check for late downpayments
+    def late_downpayment(self):
+        late_dps_individuals = self.db.late_downpayments_individuals()
+        if len(late_dps_individuals) == 0:
+            print("There are no late downpayments! :)")
+        else:
+            print("Late Downpayments from individuals: ")
+            print("Booking ID\tFirst Name\tLast Name\tEmail\t\tTelephone\tDownpament Due Date")
+            for i in range(len(late_dps_individuals)):
+                print(f"{late_dps_individuals[i][0]}\t\t{late_dps_individuals[i][1]}\t\t{late_dps_individuals[i][2]}\t{late_dps_individuals[i][3]}\t{late_dps_individuals[i][4]}\t{late_dps_individuals[i][5]}\t\t")
+    
 
 if __name__ == "__main__":
     menu = Admin("database.db")
