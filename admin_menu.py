@@ -125,7 +125,17 @@ class Admin:
             payment = Inputs.input_number("\nEnter new payment: ", "\nNot a number!")
             paid_amount += payment
             self.db.insert_booking(booking_id, price, arrival, departure, downpayment, paid_amount, dp_due_date, pay_method, children, adults, ssn)
-            print("Payment was successful!")
+            print("\nPayment was successful!")
+            print(f"\nPrice: {price}\nDown-payment: {downpayment}\nPaid Amount: {paid_amount}")
+            if paid_amount > price:
+                print(f"The client has paid more than they should. They have paid {paid_amount-price} extra.")
+            elif paid_amount == price:
+                print("No more money owed for this booking.")
+            elif paid_amount >= downpayment:
+                print(f"The down-payment has been paid.\nMoney still owed for this booking: {price-paid_amount}\nDeadline: {departure}")
+            elif paid_amount < downpayment:
+                print(f"Money still owed for the down-payment: {downpayment-paid_amount}")
+
 
 
 if __name__ == "__main__":
