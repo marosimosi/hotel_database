@@ -17,6 +17,8 @@ class Admin:
                 self.show_bookings()
             elif self.option == "4":
                 self.show_worst_reviews()
+            elif self.option == "5":
+                self.show_best_reviews()
             elif self.option == "-1":
                 return
 
@@ -27,8 +29,9 @@ class Admin:
             \n2: Check out.\
             \n3: Show all the bookings concerning a specific time period.\
             \n4: Show the worst 3 reviews and which rooms they concern.\
+            \n5: Show the best 3 reviews and which rooms they concern. \
             \n-1: Exit\n", "\nNot a valid option.",
-            ["1", "2", "3", "4", "-1"])
+            ["1", "2", "3", "4", "5", "-1"])
         return login
 
     # Function to check in a client
@@ -38,11 +41,13 @@ class Admin:
             arrival_date = self.db.retrieval_query(f"SELECT arrival FROM Booking WHERE booking_id = {int(booking_id)}")[0][0]
             arrival_date = datetime.strptime(arrival_date, '%Y-%m-%d').date()
             if arrival_date <= date.today():
-                room_id = int(self.db.get_a_room(booking_id))
-                check_in_date = date.today()
-                check_out_date = 'NULL'
-                self.db.insert_fills(booking_id, room_id, check_in_date, check_out_date)
-                print("Check in was successful!")
+                rooms = self.db.get_a_room(booking_id)
+                for i in range(len(rooms)):
+                    room_id = rooms[i][0]
+                    check_in_date = date.today()
+                    check_out_date = 'NULL'
+                    self.db.insert_fills(booking_id, room_id, check_in_date, check_out_date)
+                    print(f"Check in to room {room_id} was successful!")
             else:
                 print("You are too early! Your booking is for", arrival_date)
         else:
@@ -52,12 +57,13 @@ class Admin:
     def check_out(self):
         booking_id = Inputs.input_number("\nEnter booking id: ", "\nNot a number!")
         if len(self.db.retrieval_query(f"SELECT * FROM Fills WHERE booking_id = {int(booking_id)}")) != 0:
-            info = self.db.retrieval_query(f"SELECT * FROM Fills WHERE booking_id = {int(booking_id)}")[0]
-            room_id = info[1]
-            check_in_date = datetime.strptime(info[2], '%Y-%m-%d').date()
-            check_out_date = date.today()
-            self.db.insert_fills(booking_id, room_id, check_in_date, check_out_date)
-            print("Check out was successful!")
+            info = self.db.retrieval_query(f"SELECT * FROM Fills WHERE booking_id = {int(booking_id)}")
+            for i in range(len(info)):
+                room_id = info[i][1]
+                check_in_date = datetime.strptime(info[i][2], '%Y-%m-%d').date()
+                check_out_date = date.today()
+                self.db.insert_fills(booking_id, room_id, check_in_date, check_out_date)
+                print(f"Check out from room {room_id} was successful!")
         else:
             print("There has been no check in for this booking.")
 
@@ -72,11 +78,11 @@ class Admin:
 
     # Function that shows the worst 3 reviews and which rooms they concern
     def show_worst_reviews(self):
-        self.db.return_reviews()
+        self.db.return_worst_reviews()
 
     # Function that shows the best 3 reviews and which rooms they concern
     def show_best_reviews(self):
-        self.db.return_worst_reviews()
+        self.db.return_best_reviews()
 
 if __name__ == "__main__":
     menu = Admin("database.db")
