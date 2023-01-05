@@ -52,7 +52,7 @@ class Client:
                 pay_method = Inputs.input_method("Chose a pay method\
                     \n1:Credit card \n2:Debit card \n3:Cash\n",
                     "Not a valid option.", ["1","2","3"])
-                self.db.book(price, from_date, to_date, pay_method, adults, children, ssn)
+                self.db.book(rooms, price, from_date, to_date, pay_method, adults, children, ssn)
                 return
 
     def book_a_room(self, from_date, to_date, rooms):
