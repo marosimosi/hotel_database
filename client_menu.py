@@ -49,9 +49,12 @@ class Client:
                     self.new_client(ssn)
                 adults = Inputs.input_number("Number of adults: ", "Not a valid number")
                 children = Inputs.input_number("Number of children: ", "Not a valid number")
-                pay_method = Inputs.input_method("Chose a pay method\
+                pay = Inputs.input_method("Chose a pay method\
                     \n1:Credit card \n2:Debit card \n3:Cash\n",
                     "Not a valid option.", ["1","2","3"])
+                if pay == "1": pay_method = "credit_card"
+                elif pay == "2": pay_method = "debit_card"
+                elif pay_method == "3": pay_method = "cash"
                 self.db.book(rooms, price, from_date, to_date, pay_method, adults, children, ssn)
                 return
 
@@ -93,9 +96,9 @@ class Client:
     def new_client(self, ssn):
         fname = input("First name: ")
         lname = input("Last name: ")
-        bdate = input("Birth date: ")
+        bdate = Inputs.input_date("Birth date: ")
         email = input("E-mail address: ")
-        tel = input("Telephone number: ")
+        tel = Inputs.input_int("Telephone number: ")
         address = input("Address: ")
         self.db.new_client(ssn, email, tel, address, fname, lname, bdate)
         return       
