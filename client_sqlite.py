@@ -1,5 +1,6 @@
 import sqlite3
 import pandas as pd
+from datetime import timedelta, datetime
 
 class DB_Connection:
     def __init__(self, path_name) -> None:
@@ -52,7 +53,35 @@ class DB_Connection:
         elif result == 1: return True
 
     def new_client(self, ssn, email, tel, address, fname, lname, bdate):
+        cursor = self.conn.cursor()
+        sql = """INSERT INTO CLIENT(ssn, email, telephone, address) 
+        VALUES(?,?,?,?)"""
+        cursor.execute(sql, (ssn, email, tel, address))
+        sql = """INSERT INTO INDIVIDUAL(Fname, Lname, Bdate, individual_ssn) 
+        VALUES(?,?,?,?)"""
+        cursor.execute(sql, (fname, lname, bdate, ssn))
+        self.conn.commit()
         return
 
-    def book(self, price, from_date, to_date, pay_method, adults, children, ssn):
+    def book(self, rooms, price, from_date, to_date, pay_method, adults, children, ssn):
+        downpayment = 0.2 * price
+        paid_amount = 0
+        booking_date = datetime.today().date()
+        dp_due_date = from_date - timedelta(weeks = 2)
+        cursor = self.conn.cursor()
+
+        #INSERT BOOKING
+        sql = """INSERT INTO BOOKING(price, arrival, departure, downpayment, paid_amount, dp_due_date, pay_method, children, adults, ssn) 
+        VALUES(?,?,?,?,?,?,?,?,?,?)"""
+        cursor.execute(sql, (price, from_date, to_date, downpayment, paid_amount, dp_due_date, pay_method, children, adults, ssn))
+        
+        #FIND BOOKING_ID 
+
+        #INSERT BOOK FOR EACH ROOM
+        for room in rooms:
+           sql = """INSERT INTO BOOKS(booking_id, room_id, booking_date)
+           VALUES(?,?,?)""" 
+           cursor.execute(sql, (booking_id, room, booking_date))
+        
+        self.conn.commit()
         return
