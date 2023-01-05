@@ -25,6 +25,9 @@ class DB_Connection:
         FROM Review
         WHERE type_name = '{type_name}' """
         results = cursor.execute(sql).fetchall()
+        if results == [] : 
+            print("There are no reviews yet.")
+            return
         print("score\t\tdate\tcomments")
         for i in results:
             print(f"{i[2]}\t{i[0]}\t{i[1]}")
@@ -76,6 +79,10 @@ class DB_Connection:
         cursor.execute(sql, (price, from_date, to_date, downpayment, paid_amount, dp_due_date, pay_method, children, adults, ssn))
         
         #FIND BOOKING_ID 
+        sql = """SELECT MAX(booking_id)
+        FROM Booking"""
+        booking_id = cursor.execute(sql).fetchall()[0][0]
+        
 
         #INSERT BOOK FOR EACH ROOM
         for room in rooms:
