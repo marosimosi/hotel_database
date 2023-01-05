@@ -9,15 +9,15 @@ class Client:
             if self.option == "1":
                 self.book()
             elif self.option == "2":
-                print("Πάτησες το 2!")
+                self.check_bookings()
             elif self.option == "3":
-                print("Πάτησες το 3!")
+                self.write_review()
             elif self.option == "-1":
                 return
 
     def start(self):
         opt = Inputs.input_method(
-            "1: Look for rooms\
+            "\n\n1: Look for rooms\
             \n2: Check your bookings\
             \n3: Write a review\
             \n-1: Exit\n",
@@ -26,14 +26,18 @@ class Client:
 
     def book(self):
         rooms = []
-        from_date = Inputs.input_date("Arrival date (DD-MM-YYYY):  ")
-        to_date = Inputs.input_date("Departure date (DD-MM-YYYY):  ")
+        while True:
+            from_date = Inputs.input_date("\nArrival date (DD-MM-YYYY):  ")
+            to_date = Inputs.input_date("Departure date (DD-MM-YYYY):  ")
+            if (to_date - from_date).days > 0:
+                break
+            print("Departure date must be after arrival date")
         self.book_a_room(from_date, to_date, rooms)
         while True:
             price = 0
             for room in rooms:
                 price += self.db.calc_price(room, from_date, to_date)
-            print("Your total is", price, "€")
+            print("\nYour total is", price, "€")
             more = Inputs.input_method(
                 "1: Look for another room \n2: Finish\n",
                 "Not a valid option.", ["1", "2"])
@@ -42,9 +46,9 @@ class Client:
             elif more == "2" and len(rooms) == 0:   #Doesnt book a room
                 return
             elif more == "2" and len(rooms) != 0:   #Books room/rooms
-                ssn = Inputs.input_number("Give your SSN: ", "Not valid SSN")
-                if self.db.is_new(ssn):
-                    print("Welcome back!")
+                ssn = Inputs.input_number("\nGive your SSN: ", "Not valid SSN")
+                if self.db.client_exists(ssn):
+                    print("\nWelcome back!")
                 else:
                     self.new_client(ssn)
                 adults = Inputs.input_number("Number of adults: ", "Not a valid number")
@@ -54,17 +58,17 @@ class Client:
                     "Not a valid option.", ["1","2","3"])
                 if pay == "1": pay_method = "credit_card"
                 elif pay == "2": pay_method = "debit_card"
-                elif pay_method == "3": pay_method = "cash"
+                elif pay == "3": pay_method = "cash"
                 self.db.book(rooms, price, from_date, to_date, pay_method, adults, children, ssn)
                 return
 
     def book_a_room(self, from_date, to_date, rooms):
         available = False
         capacity = str(Inputs.input_method(
-            "Chose capacity (1-4 people):  ",
+            "\nChose capacity (1-4 people):  ",
             "Not a valid option.", ["1", "2", "3", "4"]))
         type = Inputs.input_method(
-            "1: Deluxe \n2:Standard \n3:Budget\n",
+            "\n1: Deluxe \n2:Standard \n3:Budget\n",
             "Not a valid option.", ["1", "2", "3"])
         if type == "1":
             type_name = capacity+"deluxe"
@@ -79,9 +83,9 @@ class Client:
                 available = True
                 break
         if not available:                    
-            print("This room type is not available :(")
+            print("\nThis room type is not available :(")
             return
-        print("It is available!")
+        print("\nIt is available!")
         while True:
             opt = Inputs.input_method("1: Book the room! \n2: See the reviews \n-1:Exit\n",
                 "Not a valid option.", ["1", "2", "-1"])
@@ -102,6 +106,17 @@ class Client:
         address = input("Address: ")
         self.db.new_client(ssn, email, tel, address, fname, lname, bdate)
         return       
+
+    def check_bookings(self):
+        ssn = Inputs.input_number("\nGive your SSN: ", "Not valid SSN")
+        self.db.check_bookings(ssn)
+        return 
+
+    def write_review(self):
+        ssn = Inputs.input_number("\nGive your SSN: ", "Not valid SSN")
+        self.db.write_review(ssn)
+        return
+
         
         
 if __name__ == "__main__":
