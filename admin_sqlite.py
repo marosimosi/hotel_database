@@ -47,14 +47,13 @@ class DB_connection:
                     print(f"{i[0]}\t\t{i[1]}\t{i[2]}\t{i[3]}\t{i[4]}\t\t{i[5]}\t\t{i[6]}\t{i[7]}\t{i[8]}\t\t{i[9]}\t{i[10]}")
         return bookings
 
-    # Function to return all arrival dates
-    def arrival(self):
-        sql = """SELECT arrival
-        FROM Booking"""
-        arrivals = self.retrieval_query(sql)
-        for i in arrivals:
-            print(f"{i[0]}\t\t")
-        return arrivals
+    # Function to return all departure date given the booking_id
+    def departure(self, booking_id):
+        sql = f"""SELECT departure
+        FROM Booking
+        WHERE booking_id = {booking_id}"""
+        departure_date = self.retrieval_query(sql)[0][0]
+        return departure_date
 
     # Function that returns the worst 3 reviews and the rooms they concern
     def return_worst_reviews(self):

@@ -64,12 +64,25 @@ class Admin:
         booking_id = Inputs.input_int("\nEnter booking id: ", "\nNot a number!")
         if len(self.db.retrieval_query(f"SELECT * FROM Fills WHERE booking_id = {int(booking_id)}")) != 0:
             info = self.db.retrieval_query(f"SELECT * FROM Fills WHERE booking_id = {int(booking_id)}")
-            for i in range(len(info)):
-                room_id = info[i][1]
-                check_in_date = datetime.strptime(info[i][2], '%Y-%m-%d').date()
-                check_out_date = date.today()
-                self.db.insert_fills(booking_id, room_id, check_in_date, check_out_date)
-                print(f"Check out from room {room_id} was successful!")
+            departure_date = self.db.departure(booking_id)
+            departure_date = datetime.strptime(departure_date, '%Y-%m-%d').date()
+            if departure_date > date.today():
+                print(f"Are you sure you want to check out early? You don't have to check out until {departure_date}.")
+                answer = input("Yes/No: ")
+                if answer == "Yes":
+                    for i in range(len(info)):
+                        room_id = info[i][1]
+                        check_in_date = datetime.strptime(info[i][2], '%Y-%m-%d').date()
+                        check_out_date = date.today()
+                        self.db.insert_fills(booking_id, room_id, check_in_date, check_out_date)
+                        print(f"Check out from room {room_id} was successful!")
+            else:
+                for i in range(len(info)):
+                    room_id = info[i][1]
+                    check_in_date = datetime.strptime(info[i][2], '%Y-%m-%d').date()
+                    check_out_date = date.today()
+                    self.db.insert_fills(booking_id, room_id, check_in_date, check_out_date)
+                    print(f"Check out from room {room_id} was successful!")
         else:
             print("There has been no check in for this booking.")
 
