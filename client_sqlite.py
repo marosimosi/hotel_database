@@ -29,7 +29,7 @@ class DB_Connection:
         if results == [] : 
             print("There are no reviews yet.")
             return
-        print("score\t\tdate\tcomments")
+        print("date\t\tscore\tcomments")
         for i in results:
             print(f"{i[2]}\t{i[0]}\t{i[1]}")
         return
@@ -105,7 +105,7 @@ class DB_Connection:
             print("You have no bookings yet.")
             return
         for i in results:
-            print("Booking ID:", i[0], "\nArrival date:", i[2], "\nDeparture date:", i[3],\
+            print("\nBooking ID:", i[0], "\nArrival date:", i[2], "\nDeparture date:", i[3],\
             "\nTotal price:", i[1], "€ \nDownpayment is", i[4], "€ and must be paid until", i[6],\
             "\nYou have paid", i[5], "€ \nPay method:", i[7],\
             "\nNumber of adults:", i[9], "\nNumber of children:", i[8])
