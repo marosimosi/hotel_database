@@ -1,6 +1,7 @@
 import sqlite3
 import pandas as pd
 from datetime import timedelta, datetime
+from inputs import Inputs
 
 class DB_Connection:
     def __init__(self, path_name) -> None:
@@ -25,6 +26,9 @@ class DB_Connection:
         FROM Review
         WHERE type_name = '{type_name}' """
         results = cursor.execute(sql).fetchall()
+        if results == [] : 
+            print("There are no reviews yet.")
+            return
         print("score\t\tdate\tcomments")
         for i in results:
             print(f"{i[2]}\t{i[0]}\t{i[1]}")
@@ -43,7 +47,7 @@ class DB_Connection:
             or (from_date.month == 1 and from_date.day < 9) : return results[0][2] * delta
         else : return results[0][0] * delta
 
-    def is_new(self, ssn):
+    def client_exists(self, ssn):
         cursor = self.conn.cursor()
         sql = f"""SELECT COUNT(*)
         FROM Client
@@ -76,6 +80,10 @@ class DB_Connection:
         cursor.execute(sql, (price, from_date, to_date, downpayment, paid_amount, dp_due_date, pay_method, children, adults, ssn))
         
         #FIND BOOKING_ID 
+        sql = """SELECT MAX(booking_id)
+        FROM Booking"""
+        booking_id = cursor.execute(sql).fetchall()[0][0]
+        
 
         #INSERT BOOK FOR EACH ROOM
         for room in rooms:
@@ -83,5 +91,55 @@ class DB_Connection:
            VALUES(?,?,?)""" 
            cursor.execute(sql, (booking_id, room, booking_date))
         
+        self.conn.commit()
+        return
+
+
+    def check_bookings(self, ssn):
+        cursor = self.conn.cursor()
+        sql = f"""SELECT *
+        FROM Booking 
+        WHERE ssn = {ssn}"""
+        results = cursor.execute(sql).fetchall()
+        if results == [] : 
+            print("You have no bookings yet.")
+            return
+        for i in results:
+            print("Booking ID:", i[0], "\nArrival date:", i[2], "\nDeparture date:", i[3],\
+            "\nTotal price:", i[1], "€ \nDownpayment is", i[4], "€ and must be paid until", i[6],\
+            "\nYou have paid", i[5], "€ \nPay method:", i[7],\
+            "\nNumber of adults:", i[9], "\nNumber of children:", i[8])
+            print("\nRooms:")
+            sql = f"""SELECT type_name
+            FROM Books NATURAL JOIN Room
+            WHERE booking_id = {i[0]}"""
+            rooms = cursor.execute(sql).fetchall()
+            for j in rooms:
+                print(j[0])
+        return
+
+    def write_review(self, ssn):
+        rooms = []
+        cursor = self.conn.cursor()
+        sql = f"""SELECT type_name
+        FROM Room NATURAL JOIN Fills NATURAL JOIN Booking
+        WHERE ssn = {ssn}"""
+        results = cursor.execute(sql).fetchall()
+        if results == [] : 
+            print("You have not stayed in any of our rooms yet.")
+            return
+        print("You have stayed in:")
+        for i in results:
+            print(i[0])
+            rooms.append(i[0])
+        option = Inputs.input_method("Which room does the review concern? ", "Not a valid option", rooms)
+        score = float(Inputs.input_method("\nGive a score (1-5): ", "Not a valid score",\
+            ["0.5", "1", "1.5", "2", "2.5", "3", "3.5", "4", "4.5", "5"]))
+        text = input("Write your review: ")
+        date = datetime.today().date()
+        sql = """INSERT INTO Review(text, date, score, ssn, type_name)
+           VALUES(?,?,?,?,?)""" 
+        cursor.execute(sql, (text, date, score, ssn, option))
+
         self.conn.commit()
         return
