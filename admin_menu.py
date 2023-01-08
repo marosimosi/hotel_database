@@ -68,7 +68,7 @@ class Admin:
             departure_date = datetime.strptime(departure_date, '%Y-%m-%d').date()
             if departure_date > date.today():
                 print(f"Are you sure you want to check out early? You don't have to check out until {departure_date}.")
-                answer = input("Yes/No: ")
+                answer = Inputs.input_method("Yes/No: ", "\nNot a valid option.", ["Yes", "No"])
                 if answer == "Yes":
                     for i in range(len(info)):
                         room_id = info[i][1]
