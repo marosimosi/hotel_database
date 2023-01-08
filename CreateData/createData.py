@@ -12,7 +12,7 @@ fills_data = pd.read_excel("CreateData/ExcelFiles/fills.xlsx")
 typedata = pd.read_excel("CreateData/ExcelFiles/type.xlsx")
 roomdata = pd.read_excel("CreateData/ExcelFiles/room.xlsx")
 
-with sqlite3.connect("database.db") as conn:
+with sqlite3.connect("CreateData/database.db") as conn:
     cursor = conn.cursor()
 
     for _, row in client_data.iterrows():
