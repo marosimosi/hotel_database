@@ -87,7 +87,7 @@ class Client:
             return
         print("\nIt is available!")
         while True:
-            opt = Inputs.input_method("1: Book the room! \n2: See the reviews \n-1:Exit\n",
+            opt = Inputs.input_method("\n1: Book the room! \n2: See the reviews \n-1:Exit\n",
                 "Not a valid option.", ["1", "2", "-1"])
             if opt == "1":
                 rooms.append(av_room)
@@ -102,7 +102,7 @@ class Client:
         lname = input("Last name: ")
         bdate = Inputs.input_date("Birth date: ")
         email = input("E-mail address: ")
-        tel = Inputs.input_int("Telephone number: ")
+        tel = Inputs.input_int("Telephone number: ", "Not valid telephone number")
         address = input("Address: ")
         self.db.new_client(ssn, email, tel, address, fname, lname, bdate)
         return       
