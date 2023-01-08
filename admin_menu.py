@@ -139,4 +139,4 @@ class Admin:
 
 
 if __name__ == "__main__":
-    menu = Admin("database.db")
+    menu = Admin("CreateData/database.db")
